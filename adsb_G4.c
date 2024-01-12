@@ -4,51 +4,51 @@
 #define maxn 1000
 #define maxm 10000
 
-char s[maxn + 5][maxm + 5];
-int b[maxn + 5][maxm + 5];
+char s[maxm + 5];
+short b[maxn + 5][maxm + 5];
 int n, m;
 
 void init(char *data)
 {
     n = 0;
-    char str[maxm + 5];
-    freopen(data, "r", stdin);
-    while (scanf("%s", str) == 1)
+    FILE *fp;
+    char buf[maxm + 5];
+    fp = fopen(data, "r");
+    fgets(s, maxm + 5, fp);
+    m = strlen(s);
+    while (fgets(buf, maxm + 5, fp) != NULL)
     {
-        strcpy(s[++n], str);
-    }
-    fclose(stdin);
-    m = strlen(s[1]);
-    for (int i = 2; i <= n; ++i)
-    {
-        b[i][0] = s[1][0] == s[i][0] ? 0 : 1;
-        for (int j = 1; j < m; ++j)
+        n++;
+        b[n][0] = s[0] == buf[0] ? 0 : 1;
+        for (int i = 1; i < m; ++i)
         {
-            b[i][j] = b[i][j - 1] + (s[1][j] == s[i][j] ? 0 : 1);
+            b[n][i] = b[n][i - 1] + (s[i] == buf[i] ? 0 : 1);
         }
     }
+    fclose(fp);
 }
 
 void work(char *range, char *myans)
 {
-    char str[maxm + 5];
-    freopen(range, "r", stdin);
+    char str[50];
+    FILE *fp;
+    fp = fopen(range, "r");
+
     freopen(myans, "w", stdout);
-    scanf("%s", str);
-    while (scanf("%s", str) == 1)
+    fgets(str, 50, fp);
+    while (fgets(str, 50, fp) != NULL)
     {
         int st, len;
         int ans = 0;
         sscanf(str, "%d, %d", &st, &len);
-        scanf("%d", &len);
-        for (int i = 2; i <= n; ++i)
+        for (int i = 1; i <= n; ++i)
         {
             if (!(b[i][st + len - 1] - b[i][st - 1]))
                 ans++;
         }
         printf("%d, %d, %d\n", st, len, ans);
     }
-    fclose(stdin);
+    fclose(fp);
     fclose(stdout);
 }
 

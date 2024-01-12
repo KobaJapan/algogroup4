@@ -26,7 +26,7 @@ for model in {1..2}; do
         fi
         echo
         # 一時ファイルの削除
-        rm answer
+        # rm answer
     done
     # 合計結果の表示
     echo "MODEL${model}: all ${all_result}"
